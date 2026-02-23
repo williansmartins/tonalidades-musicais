@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Identificador de Acidentes Musicais</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1f1c2c, #928dab);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        width: 400px;
+        text-align: center;
+        animation: fadeIn 0.6s ease;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+        font-size: 22px;
+        color: #333;
+    }
+
+    select, button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 10px;
+        border: none;
+        font-size: 16px;
+    }
+
+    select {
+        background: #f2f2f2;
+    }
+
+    button {
+        background: #6a11cb;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #2575fc;
+    }
+
+    .resultado {
+        margin-top: 25px;
+        padding: 15px;
+        background: #f9f9f9;
+        border-radius: 12px;
+        min-height: 80px;
+        transition: 0.3s;
+    }
+
+    .acidentes {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 10px;
+        color: #444;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid-botoes {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .btn-tom {
+        padding: 12px 5px;
+        border: 2px solid #6a11cb;
+        background: white;
+        color: #6a11cb;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .btn-tom:hover {
+        background: #6a11cb;
+        color: white;
+    }
+
+    .btn-tom.ativo {
+        background: #2575fc;
+        color: white;
+        border-color: #2575fc;
+        transform: scale(1.05);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🎵 Identificador de Acidentes</h1>
+
+    <div id="seletor-botoes" class="grid-botoes"></div>
+
+    <div class="resultado" id="resultado"></div>
+</div>
+
+<script>
+    var resultadoDiv;
+
+    const acidentesSustenidos = ["F#", "C#", "G#", "D#", "A#", "E#", "B#"];
+    const acidentesBemois = ["Bb", "Eb", "Ab", "Db", "Gb", "Cb", "Fb"];
+    
+    const nomeDasTonalidadesSustenidos = ["G", "D", "A", "E", "G#", "F#", "C#" ];
+    const nomeDasTonalidadesBemois = ["F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb" ];
+    
+    function identificar(tonalidade) {
+        resultadoDiv = document.getElementById("resultado");
+
+        if(tonalidade=="C"){
+            resultadoDiv.innerHTML = `
+                <strong>Tom:</strong> ${tonalidade}<br>
+                Não possui acidentes.
+            `;  
+        }else if ( tonalidade.includes("b") || tonalidade == "F" ) {
+            buscarAcidentesBemois(tonalidade);
+        }else{
+            buscarAcidentesSustenidos(tonalidade);
+        }
+    }
+
+    function buscarAcidentesSustenidos(tonalidade){
+        const index = nomeDasTonalidadesSustenidos.indexOf(tonalidade);
+        const acidentes = acidentesSustenidos.slice(0, index + 1);
+
+        resultadoDiv.innerHTML = `
+            <strong>Tom:</strong> ${tonalidade}<br>
+            Tipo: Sustenidos (#)<br>
+            Quantidade: ${acidentes.length}
+            <div class="acidentes">${acidentes.join(" ")}</div>
+        `;
+    }
+
+    function buscarAcidentesBemois(tonalidade){
+        const index = nomeDasTonalidadesBemois.indexOf(tonalidade);
+        console.info("Index:" + index);
+        const acidentes = acidentesBemois.slice(0, index + 1);
+        console.info("acidentes:" + acidentes);
+
+        resultadoDiv.innerHTML = `
+            <strong>Tom:</strong> ${tonalidade}<br>
+            Tipo: Bemóis (b)<br>
+            Acidentes: ${acidentes.length}
+            <div class="acidentes">${acidentes.join(" ")}</div>
+        `;
+    }
+
+    function criarBotoes() {
+        const container = document.getElementById("seletor-botoes");
+        const todosOsTons = ["C", ...nomeDasTonalidadesSustenidos, ...nomeDasTonalidadesBemois];
+
+        container.innerHTML = ""; // Limpa o container
+
+        todosOsTons.forEach(tom => {
+            const btn = document.createElement("button");
+            btn.textContent = tom;
+            btn.classList.add("btn-tom");
+            
+            // Aqui substitui o seu "atualizarQuandoSelectForAtualizado"
+            btn.onclick = function() {
+                // 1. Define a tonalidade global
+                tonalidade = tom; 
+
+                // 2. Visual: Marca qual botão está ativo
+                document.querySelectorAll('.btn-tom').forEach(b => b.classList.remove('ativo'));
+                btn.classList.add('ativo');
+
+                // 3. Executa a lógica
+                // console.log("Botão clicado: " + tom);
+                identificar(tonalidade); 
+            };
+            
+            container.appendChild(btn);
+        });
+    }
+    
+    window.onload = () => {
+        criarBotoes();
+    };
+
+</script>
+
+</body>
+</html>

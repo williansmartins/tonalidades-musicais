@@ -1,0 +1,2 @@
+si, mi, la, re, sol, do, fa
+fa, do , sol, re, la, mi, si
