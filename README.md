@@ -38,6 +38,22 @@ python3 -m http.server 8000
 
 Depois, acesse `http://localhost:8000/tonalidades.html`.
 
+## Testes
+
+Os testes validam:
+
+- tonalidade natural (`C`)
+- acidentes de sustenidos
+- acidentes de bemóis
+- lista de tonalidades disponíveis
+- tratamento de tonalidade inválida
+
+Para executar:
+
+```bash
+npm test
+```
+
 ## Exemplo de uso
 
 - Selecionando `C`: retorna que não possui acidentes.
@@ -53,7 +69,6 @@ Depois, acesse `http://localhost:8000/tonalidades.html`.
 ## Melhorias sugeridas
 
 - Separar CSS e JavaScript em arquivos próprios
-- Adicionar testes para validação das tonalidades
 - Incluir suporte a tonalidades menores
 - Melhorar acessibilidade (teclado, contraste e ARIA)
 

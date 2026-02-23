@@ -115,89 +115,65 @@
     <div class="resultado" id="resultado"></div>
 </div>
 
+<script src="tonalidades.js"></script>
 <script>
-    var resultadoDiv;
+    const resultadoDiv = document.getElementById("resultado");
+    const { listarTonalidades, obterInfoTonalidade } = Tonalidades;
 
-    const acidentesSustenidos = ["F#", "C#", "G#", "D#", "A#", "E#", "B#"];
-    const acidentesBemois = ["Bb", "Eb", "Ab", "Db", "Gb", "Cb", "Fb"];
-    
-    const nomeDasTonalidadesSustenidos = ["G", "D", "A", "E", "G#", "F#", "C#" ];
-    const nomeDasTonalidadesBemois = ["F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb" ];
-    
     function identificar(tonalidade) {
-        resultadoDiv = document.getElementById("resultado");
+        const info = obterInfoTonalidade(tonalidade);
 
-        if(tonalidade=="C"){
+        if (info.tipo === "natural") {
             resultadoDiv.innerHTML = `
-                <strong>Tom:</strong> ${tonalidade}<br>
+                <strong>Tom:</strong> ${info.tonalidade}<br>
                 Não possui acidentes.
-            `;  
-        }else if ( tonalidade.includes("b") || tonalidade == "F" ) {
-            buscarAcidentesBemois(tonalidade);
-        }else{
-            buscarAcidentesSustenidos(tonalidade);
+            `;
+            return;
         }
-    }
 
-    function buscarAcidentesSustenidos(tonalidade){
-        const index = nomeDasTonalidadesSustenidos.indexOf(tonalidade);
-        const acidentes = acidentesSustenidos.slice(0, index + 1);
+        if (info.tipo === "bemol") {
+            resultadoDiv.innerHTML = `
+                <strong>Tom:</strong> ${info.tonalidade}<br>
+                Tipo: Bemóis (b)<br>
+                Acidentes: ${info.quantidade}
+                <div class="acidentes">${info.acidentes.join(" ")}</div>
+            `;
+            return;
+        }
 
         resultadoDiv.innerHTML = `
-            <strong>Tom:</strong> ${tonalidade}<br>
+            <strong>Tom:</strong> ${info.tonalidade}<br>
             Tipo: Sustenidos (#)<br>
-            Quantidade: ${acidentes.length}
-            <div class="acidentes">${acidentes.join(" ")}</div>
-        `;
-    }
-
-    function buscarAcidentesBemois(tonalidade){
-        const index = nomeDasTonalidadesBemois.indexOf(tonalidade);
-        console.info("Index:" + index);
-        const acidentes = acidentesBemois.slice(0, index + 1);
-        console.info("acidentes:" + acidentes);
-
-        resultadoDiv.innerHTML = `
-            <strong>Tom:</strong> ${tonalidade}<br>
-            Tipo: Bemóis (b)<br>
-            Acidentes: ${acidentes.length}
-            <div class="acidentes">${acidentes.join(" ")}</div>
+            Quantidade: ${info.quantidade}
+            <div class="acidentes">${info.acidentes.join(" ")}</div>
         `;
     }
 
     function criarBotoes() {
         const container = document.getElementById("seletor-botoes");
-        const todosOsTons = ["C", ...nomeDasTonalidadesSustenidos, ...nomeDasTonalidadesBemois];
+        const todosOsTons = listarTonalidades();
 
-        container.innerHTML = ""; // Limpa o container
+        container.innerHTML = "";
 
         todosOsTons.forEach(tom => {
             const btn = document.createElement("button");
             btn.textContent = tom;
             btn.classList.add("btn-tom");
-            
-            // Aqui substitui o seu "atualizarQuandoSelectForAtualizado"
-            btn.onclick = function() {
-                // 1. Define a tonalidade global
-                tonalidade = tom; 
 
-                // 2. Visual: Marca qual botão está ativo
+            btn.onclick = function() {
                 document.querySelectorAll('.btn-tom').forEach(b => b.classList.remove('ativo'));
                 btn.classList.add('ativo');
 
-                // 3. Executa a lógica
-                // console.log("Botão clicado: " + tom);
-                identificar(tonalidade); 
+                identificar(tom);
             };
-            
+
             container.appendChild(btn);
         });
     }
-    
+
     window.onload = () => {
         criarBotoes();
     };
-
 </script>
 
 </body>
