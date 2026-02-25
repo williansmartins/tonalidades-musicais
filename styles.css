@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    min-height: 100dvh;
+}
+
+.container {
+    background: white;
+    box-sizing: border-box;
+    padding: 24px 16px;
+    border-radius: 0;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    min-height: 100dvh;
+    text-align: center;
+    animation: fadeIn 0.6s ease;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #333;
+}
+
+select,
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+}
+
+select {
+    background: #f2f2f2;
+}
+
+button {
+    background: #6a11cb;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #2575fc;
+}
+
+.resultado {
+    margin-top: 25px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    min-height: 80px;
+    transition: 0.3s;
+}
+
+.acidentes {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #444;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.grid-botoes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.shuffle-wrapper {
+    margin-bottom: 16px;
+}
+
+.btn-shuffle {
+    background: #ff7a18;
+}
+
+.btn-shuffle:hover {
+    background: #f15d00;
+}
+
+.btn-tom {
+    padding: 12px 5px;
+    border: 2px solid #6a11cb;
+    background: white;
+    color: #6a11cb;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-tom:hover {
+    background: #6a11cb;
+    color: white;
+}
+
+.btn-tom.ativo {
+    background: #2575fc;
+    color: white;
+    border-color: #2575fc;
+    transform: scale(1.05);
+}
+
+@media (min-width: 768px) {
+    body {
+        align-items: center;
+        min-height: 100vh;
+        padding: 24px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 420px;
+        min-height: auto;
+        border-radius: 20px;
+        padding: 40px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .grid-botoes {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

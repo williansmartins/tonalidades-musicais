@@ -21,9 +21,9 @@ O projeto exibe botões com tonalidades. Ao clicar em um tom, a interface mostra
 
 ## Estrutura do projeto
 
-- `index.html`: entrada da aplicação (redireciona para `tonalidades.html`)
-- `tonalidades.html`: página principal com HTML, CSS e JavaScript da aplicação
-- `tonalidades.js`: regras e funções para cálculo das tonalidades
+- `index.html`: página principal com HTML da aplicação
+- `app.js`: regras de tonalidades + comportamento da interface (renderização, clique e embaralhamento)
+- `styles.css`: estilos da interface
 - `acidentes.txt`: anotações com a ordem dos acidentes
 
 ## Como executar

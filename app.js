@@ -1,0 +1,145 @@
+const Tonalidades = (function () {
+    const acidentesSustenidos = ["F#", "C#", "G#", "D#", "A#", "E#", "B#"];
+    const acidentesBemois = ["Bb", "Eb", "Ab", "Db", "Gb", "Cb", "Fb"];
+
+    const nomeDasTonalidadesSustenidos = ["G", "D", "A", "E", "G#", "F#", "C#"];
+    const nomeDasTonalidadesBemois = ["F", "Bb", "Eb", "Ab", "Db", "Gb", "Cb"];
+
+    function obterInfoTonalidade(tonalidade) {
+        if (tonalidade === "C") {
+            return {
+                tonalidade,
+                tipo: "natural",
+                quantidade: 0,
+                acidentes: [],
+            };
+        }
+
+        const indexBemol = nomeDasTonalidadesBemois.indexOf(tonalidade);
+        if (indexBemol >= 0) {
+            const acidentes = acidentesBemois.slice(0, indexBemol + 1);
+            return {
+                tonalidade,
+                tipo: "bemol",
+                quantidade: acidentes.length,
+                acidentes,
+            };
+        }
+
+        const indexSustenido = nomeDasTonalidadesSustenidos.indexOf(tonalidade);
+        if (indexSustenido >= 0) {
+            const acidentes = acidentesSustenidos.slice(0, indexSustenido + 1);
+            return {
+                tonalidade,
+                tipo: "sustenido",
+                quantidade: acidentes.length,
+                acidentes,
+            };
+        }
+
+        throw new Error("Tonalidade invalida: " + tonalidade);
+    }
+
+    function listarTonalidades() {
+        return ["C", ...nomeDasTonalidadesSustenidos, ...nomeDasTonalidadesBemois];
+    }
+
+    return {
+        acidentesSustenidos,
+        acidentesBemois,
+        nomeDasTonalidadesSustenidos,
+        nomeDasTonalidadesBemois,
+        obterInfoTonalidade,
+        listarTonalidades,
+    };
+})();
+
+if (typeof module === "object" && module.exports) {
+    module.exports = Tonalidades;
+}
+
+if (typeof globalThis !== "undefined") {
+    globalThis.Tonalidades = Tonalidades;
+    if (typeof globalThis.ScriptApp !== "undefined") {
+        globalThis.obterInfoTonalidade = Tonalidades.obterInfoTonalidade;
+        globalThis.listarTonalidades = Tonalidades.listarTonalidades;
+    }
+}
+
+if (typeof window !== "undefined" && typeof document !== "undefined") {
+    const resultadoDiv = document.getElementById("resultado");
+    const { listarTonalidades, obterInfoTonalidade } = Tonalidades;
+    let todosOsTons = [];
+    let tonalidadeSelecionada = null;
+
+    function identificar(tonalidade) {
+        const info = obterInfoTonalidade(tonalidade);
+
+        if (info.tipo === "natural") {
+            resultadoDiv.innerHTML = `
+                <strong>Tom:</strong> ${info.tonalidade}<br>
+                Não possui acidentes.
+            `;
+            return;
+        }
+
+        if (info.tipo === "bemol") {
+            resultadoDiv.innerHTML = `
+                <strong>Tom:</strong> ${info.tonalidade}<br>
+                Tipo: Bemóis (b)<br>
+                Acidentes: ${info.quantidade}
+                <div class="acidentes">${info.acidentes.join(" ")}</div>
+            `;
+            return;
+        }
+
+        resultadoDiv.innerHTML = `
+            <strong>Tom:</strong> ${info.tonalidade}<br>
+            Tipo: Sustenidos (#)<br>
+            Quantidade: ${info.quantidade}
+            <div class="acidentes">${info.acidentes.join(" ")}</div>
+        `;
+    }
+
+    function criarBotoes() {
+        const container = document.getElementById("seletor-botoes");
+        if (todosOsTons.length === 0) {
+            todosOsTons = listarTonalidades();
+        }
+
+        container.innerHTML = "";
+
+        todosOsTons.forEach((tom) => {
+            const btn = document.createElement("button");
+            btn.textContent = tom;
+            btn.classList.add("btn-tom");
+            if (tonalidadeSelecionada === tom) {
+                btn.classList.add("ativo");
+            }
+
+            btn.onclick = function () {
+                document.querySelectorAll(".btn-tom").forEach((b) => b.classList.remove("ativo"));
+                btn.classList.add("ativo");
+                tonalidadeSelecionada = tom;
+
+                identificar(tom);
+            };
+
+            container.appendChild(btn);
+        });
+    }
+
+    function embaralharTonalidades() {
+        for (let i = todosOsTons.length - 1; i > 0; i -= 1) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [todosOsTons[i], todosOsTons[j]] = [todosOsTons[j], todosOsTons[i]];
+        }
+
+        criarBotoes();
+    }
+
+    window.onload = () => {
+        criarBotoes();
+        document.getElementById("btn-shuffle").addEventListener("click", embaralharTonalidades);
+    };
+}

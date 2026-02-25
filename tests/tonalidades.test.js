@@ -1,7 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
-const { obterInfoTonalidade, listarTonalidades } = require("../tonalidades");
+const { obterInfoTonalidade, listarTonalidades } = require("../app");
 
 test("retorna tom natural para C", () => {
     const info = obterInfoTonalidade("C");
