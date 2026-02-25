@@ -85,6 +85,18 @@
         margin-bottom: 20px;
     }
 
+    .shuffle-wrapper {
+        margin-bottom: 16px;
+    }
+
+    .btn-shuffle {
+        background: #ff7a18;
+    }
+
+    .btn-shuffle:hover {
+        background: #f15d00;
+    }
+
     .btn-tom {
         padding: 12px 5px;
         border: 2px solid #6a11cb;
@@ -137,6 +149,10 @@
 <div class="container">
     <h1>🎵 Identificador de Acidentes</h1>
 
+    <div class="shuffle-wrapper">
+        <button id="btn-shuffle" class="btn-shuffle" type="button">Embaralhar tonalidades</button>
+    </div>
+
     <div id="seletor-botoes" class="grid-botoes"></div>
 
     <div class="resultado" id="resultado"></div>
@@ -146,6 +162,8 @@
 <script>
     const resultadoDiv = document.getElementById("resultado");
     const { listarTonalidades, obterInfoTonalidade } = Tonalidades;
+    let todosOsTons = [];
+    let tonalidadeSelecionada = null;
 
     function identificar(tonalidade) {
         const info = obterInfoTonalidade(tonalidade);
@@ -178,7 +196,9 @@
 
     function criarBotoes() {
         const container = document.getElementById("seletor-botoes");
-        const todosOsTons = listarTonalidades();
+        if (todosOsTons.length === 0) {
+            todosOsTons = listarTonalidades();
+        }
 
         container.innerHTML = "";
 
@@ -186,10 +206,14 @@
             const btn = document.createElement("button");
             btn.textContent = tom;
             btn.classList.add("btn-tom");
+            if (tonalidadeSelecionada === tom) {
+                btn.classList.add("ativo");
+            }
 
             btn.onclick = function() {
                 document.querySelectorAll('.btn-tom').forEach(b => b.classList.remove('ativo'));
                 btn.classList.add('ativo');
+                tonalidadeSelecionada = tom;
 
                 identificar(tom);
             };
@@ -198,8 +222,18 @@
         });
     }
 
+    function embaralharTonalidades() {
+        for (let i = todosOsTons.length - 1; i > 0; i -= 1) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [todosOsTons[i], todosOsTons[j]] = [todosOsTons[j], todosOsTons[i]];
+        }
+
+        criarBotoes();
+    }
+
     window.onload = () => {
         criarBotoes();
+        document.getElementById("btn-shuffle").addEventListener("click", embaralharTonalidades);
     };
 </script>
 

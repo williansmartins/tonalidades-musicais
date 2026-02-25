@@ -13,30 +13,44 @@ O projeto exibe botões com tonalidades. Ao clicar em um tom, a interface mostra
 
 ## Funcionalidades
 
-- Interface visual em HTML/CSS com layout centralizado
+- Interface visual em HTML/CSS com layout mobile-first (ajustada para iPhone)
 - Seleção de tonalidades por botões
+- Botão para embaralhar a ordem das tonalidades exibidas
 - Cálculo de acidentes com base em listas pré-definidas no JavaScript
 - Exibição dinâmica do resultado sem recarregar a página
 
 ## Estrutura do projeto
 
+- `index.html`: entrada da aplicação (redireciona para `tonalidades.html`)
 - `tonalidades.html`: página principal com HTML, CSS e JavaScript da aplicação
+- `tonalidades.js`: regras e funções para cálculo das tonalidades
 - `acidentes.txt`: anotações com a ordem dos acidentes
 
 ## Como executar
 
 Como é um projeto estático, não precisa instalar dependências.
 
-1. Abra o arquivo `tonalidades.html` no navegador.
-2. Clique em uma tonalidade para visualizar os acidentes.
+1. Execute o servidor local:
+
+```bash
+npm run serve
+```
+
+2. No navegador do computador, acesse:
+
+`http://localhost:8080/`
+
+3. No iPhone (mesma rede Wi-Fi), acesse:
+
+`http://SEU_IP_LOCAL:8080/`
 
 Opcionalmente, você pode usar um servidor local simples:
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8080 --bind 0.0.0.0 --directory .
 ```
 
-Depois, acesse `http://localhost:8000/tonalidades.html`.
+Depois, acesse `http://localhost:8080/`.
 
 ## Testes
 
@@ -59,6 +73,7 @@ npm test
 - Selecionando `C`: retorna que não possui acidentes.
 - Selecionando um tom com sustenidos: mostra os acidentes com `#`.
 - Selecionando um tom com bemóis: mostra os acidentes com `b`.
+- Clicando em `Embaralhar tonalidades`: reorganiza a ordem dos botões de tom.
 
 ## Tecnologias
 
