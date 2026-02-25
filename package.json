@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "serve": "python3 -m http.server 8080 --bind 0.0.0.0 --directory .",
     "test": "node --test"
   }
 }

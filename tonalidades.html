@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Identificador de Acidentes Musicais</title>
 <style>
     body {
@@ -10,23 +11,25 @@
         background: linear-gradient(135deg, #1f1c2c, #928dab);
         display: flex;
         justify-content: center;
-        align-items: center;
-        height: 100vh;
+        align-items: stretch;
+        min-height: 100dvh;
     }
 
     .container {
         background: white;
-        padding: 40px;
-        border-radius: 20px;
+        box-sizing: border-box;
+        padding: 24px 16px;
+        border-radius: 0;
         box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        width: 400px;
+        width: 100%;
+        min-height: 100dvh;
         text-align: center;
         animation: fadeIn 0.6s ease;
     }
 
     h1 {
         margin-bottom: 20px;
-        font-size: 22px;
+        font-size: 20px;
         color: #333;
     }
 
@@ -77,7 +80,7 @@
 
     .grid-botoes {
         display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+        grid-template-columns: repeat(3, 1fr);
         gap: 10px;
         margin-bottom: 20px;
     }
@@ -103,6 +106,30 @@
         color: white;
         border-color: #2575fc;
         transform: scale(1.05);
+    }
+
+    @media (min-width: 768px) {
+        body {
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            min-height: auto;
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 22px;
+        }
+
+        .grid-botoes {
+            grid-template-columns: repeat(4, 1fr);
+        }
     }
 </style>
 </head>
